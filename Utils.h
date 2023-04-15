@@ -3,6 +3,9 @@
 
 #include <iostream>
 #include <cmath>
+#include <algorithm>
+#include <vector>
+
 #include "Math.h"
 #include "Matrix.h"
 #include "Vector.h"
@@ -14,10 +17,12 @@ public:
     using matrix_type = std::vector<std::vector<T>>;
 
     static T rmse(Vector<T>&, Vector<T>&);
-
     static T sigmoid(T);
-
     static Vector<T> softmax(Vector<T>&);
+    static Matrix<int> one_hot(Vector<int>&);
+    static Vector<int> from_one_hot(Matrix<int>&);
+    static float accuracy(Vector<int>&, Vector<int>&);
+    static float accuracy(Vector<int>&, Matrix<int>&);
 };
 
 

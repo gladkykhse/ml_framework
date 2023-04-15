@@ -4,6 +4,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <cmath>
+#include <vector>
 
 #include "Matrix.h"
 #include "Vector.h"
