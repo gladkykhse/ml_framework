@@ -1,6 +1,7 @@
 #ifndef MACHINE_LEARNING_FRAMEWORK_MATRIX_H
 #define MACHINE_LEARNING_FRAMEWORK_MATRIX_H
 
+#include <iostream>
 #include <vector>
 #include <stdexcept>
 #include <tuple>
@@ -15,7 +16,7 @@ public:
 
     std::tuple<int, int> shape();
 
-    vector_matrix& getMatrix();
+    vector_matrix& get();
 
     Matrix<T> operator+(Matrix<T>&);
     Matrix<T> operator-(Matrix<T>&);
@@ -26,8 +27,12 @@ public:
     Matrix<T> operator-(T);
     Matrix<T> operator*(T);
     Matrix<T> operator/(T);
+
 private:
+    enum operations{ Add, Sub, Mul, Div };
     vector_matrix matrix;
+    Matrix<T> matrixOperation(Matrix<T>&, Matrix::operations);
+    Matrix<T> scalarOperation(T, Matrix::operations);
 };
 
 
