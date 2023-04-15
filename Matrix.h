@@ -5,6 +5,8 @@
 #include <vector>
 #include <stdexcept>
 #include <tuple>
+template<typename T>
+class Matrix;
 #include "Vector.h"
 
 template <typename T>

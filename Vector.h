@@ -29,8 +29,7 @@ public:
     Vector<T> operator*(T);
     Vector<T> operator/(T);
 
-    template <typename P>
-    Matrix<P> toMatrix();
+    Matrix<T> toMatrix();
     T sum();
 private:
     enum operations{ Add, Sub, Mul, Div };

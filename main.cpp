@@ -25,7 +25,7 @@ int main() {
     Matrix<float> m1(my_m1);
     Matrix<float> m2(my_m2);
 
-    Utils<float>::softmax(v2).print();
+    Utils<float>::softmax(m2).print();
 
 //    Utils<float>::softmax(v1).print();
 

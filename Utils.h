@@ -16,11 +16,8 @@ public:
     static T rmse(Vector<T>&, Vector<T>&);
 
     static T sigmoid(T);
-    static Vector<T> sigmoid(Vector<T>&);
-    static Matrix<T> sigmoid(Matrix<T>&);
 
     static Vector<T> softmax(Vector<T>&);
-    static Matrix<T> softmax(Matrix<T>&);
 };
 
 
