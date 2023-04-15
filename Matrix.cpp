@@ -1,7 +1,7 @@
 #include "Matrix.h"
 
 template <typename T>
-Matrix<T>::Matrix(vector_matrix matrix) : matrix(matrix) {};
+Matrix<T>::Matrix(matrix_type matrix) : matrix(matrix) {};
 
 template <typename T>
 void Matrix<T>::print() {
@@ -29,7 +29,7 @@ Matrix<T> Matrix<T>::matrixOperation(Matrix<T> &other, Matrix::operations op) {
     if (matrix.size() != std::get<0>(other.shape()) || matrix[0].size() != std::get<1>(other.shape()))
         throw std::invalid_argument("Matrices must be of the same size");
 
-    vector_matrix newMatrix(matrix.size(), std::vector<T>(matrix[0].size(), 0));
+    matrix_type newMatrix(matrix.size(), std::vector<T>(matrix[0].size(), 0));
     for (int i = 0; i < matrix.size(); i++) {
         for (int j = 0; j < matrix[0].size(); j++) {
             switch (op) {
@@ -58,7 +58,7 @@ Matrix<T> Matrix<T>::matrixOperation(Matrix<T> &other, Matrix::operations op) {
 
 template<typename T>
 Matrix<T> Matrix<T>::scalarOperation(T other, Matrix::operations op) {
-    vector_matrix newMatrix(matrix.size(), std::vector<T>(matrix[0].size(), 0));
+    matrix_type newMatrix(matrix.size(), std::vector<T>(matrix[0].size(), 0));
     for (int i = 0; i < matrix.size(); i++) {
         for (int j = 0; j < matrix[0].size(); j++) {
             switch (op) {

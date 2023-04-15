@@ -9,14 +9,14 @@
 template <typename T>
 class Matrix {
 public:
-    using vector_matrix  = std::vector<std::vector<T>>;
-    explicit Matrix(vector_matrix);
+    using matrix_type = std::vector<std::vector<T>>;
+    explicit Matrix(matrix_type);
 
     void print();
 
     std::tuple<int, int> shape();
 
-    vector_matrix& get();
+    matrix_type& get();
 
     Matrix<T> operator+(Matrix<T>&);
     Matrix<T> operator-(Matrix<T>&);
@@ -30,7 +30,7 @@ public:
 
 private:
     enum operations{ Add, Sub, Mul, Div };
-    vector_matrix matrix;
+    matrix_type matrix;
     Matrix<T> matrixOperation(Matrix<T>&, Matrix::operations);
     Matrix<T> scalarOperation(T, Matrix::operations);
 };
