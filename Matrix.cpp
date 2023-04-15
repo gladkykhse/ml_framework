@@ -124,4 +124,32 @@ Matrix<T> Matrix<T>::operator/(T other) {
     return scalarOperation(other, Div);
 }
 
+template<typename T>
+Matrix<T> Matrix<T>::transpose() {
+    int height = std::get<1>(shape());
+    int width = std::get<0>(shape());
+    matrix_type new_matrix(height, std::vector<T>(width, 0));
+
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+            new_matrix[i][j] = matrix[j][i];
+        }
+    }
+    Matrix<T> my_matrix(new_matrix);
+    return my_matrix;
+}
+
+template<typename T>
+Vector<T> Matrix<T>::sum() {
+    std::vector<T> res_vec;
+    for (auto &row : matrix) {
+        T sum = 0;
+        for (auto &elem : row)
+            sum += elem;
+        res_vec.push_back(sum);
+    }
+    Vector<T> my_vec(res_vec);
+    return my_vec;
+}
+
 

@@ -1,7 +1,7 @@
 #include "Math.h"
 
 template<typename T>
-Matrix<T> Math<T>::matmul(Matrix<T> A, Matrix<T> B) {
+Matrix<T> Math<T>::matmul(Matrix<T> &A, Matrix<T> &B) {
     if (std::get<1>(A.shape()) != std::get<0>(B.shape()))
         throw std::invalid_argument("Matrix dimensions are not compatible for multiplication");
 
@@ -26,7 +26,7 @@ Matrix<T> Math<T>::matmul(Matrix<T> A, Matrix<T> B) {
 }
 
 template<typename T>
-T Math<T>::inner(Vector<T> v1, Vector<T> v2) {
+T Math<T>::inner(Vector<T> &v1, Vector<T> &v2) {
     if (v1.size() != v2.size())
         throw std::invalid_argument("Vectors must be of the same size");
 
@@ -42,7 +42,7 @@ T Math<T>::inner(Vector<T> v1, Vector<T> v2) {
 }
 
 template<typename T>
-Matrix<T> Math<T>::outer(Vector<T> v1, Vector<T> v2) {
+Matrix<T> Math<T>::outer(Vector<T> &v1, Vector<T> &v2) {
     vector_type vec1 = v1.get();
     vector_type vec2 = v2.get();
     matrix_type res_matrix(v1.size(), std::vector<T>(v2.size(), 0));
@@ -56,3 +56,31 @@ Matrix<T> Math<T>::outer(Vector<T> v1, Vector<T> v2) {
     Matrix<T> my_matrix(res_matrix);
     return my_matrix;
 }
+
+template<typename T>
+Vector<T> Math<T>::exponentiate(Vector<T> &v) {
+    vector_type res_vec;
+    for (auto &elem : v.get()) {
+        res_vec.push_back(exp(elem));
+    }
+    Vector<T> my_vec(res_vec);
+    return my_vec;
+}
+
+template<typename T>
+Matrix<T> Math<T>::exponentiate(Matrix<T> &M) {
+    int height = std::get<0>(M.shape());
+    int width = std::get<1>(M.shape());
+    matrix_type mat = M.get();
+    matrix_type res_mat(height, vector_type(width, 0));
+
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+            res_mat[i][j] = exp(mat[i][j]);
+        }
+    }
+    Matrix<T> my_matrix(res_mat);
+    return my_matrix;
+}
+
+

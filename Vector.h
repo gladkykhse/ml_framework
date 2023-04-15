@@ -4,6 +4,8 @@
 #include <iostream>
 #include <vector>
 #include <stdexcept>
+#include "Matrix.h"
+
 
 template <typename T>
 class Vector {
@@ -26,6 +28,10 @@ public:
     Vector<T> operator-(T);
     Vector<T> operator*(T);
     Vector<T> operator/(T);
+
+    template <typename P>
+    Matrix<P> toMatrix();
+    T sum();
 private:
     enum operations{ Add, Sub, Mul, Div };
     vector_type my_vector;

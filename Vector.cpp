@@ -118,3 +118,19 @@ template<typename T>
 Vector<T> Vector<T>::operator/(T other) {
     return scalarOperation(other, Div);
 }
+
+template<typename T>
+Matrix<T> Vector<T>::toMatrix() {
+    std::vector<vector_type> mat(1, my_vector);
+    Matrix<T> my_matrix(mat);
+    return my_matrix;
+}
+
+template<typename T>
+T Vector<T>::sum() {
+    T sum = 0;
+    for (auto &elem : my_vector) {
+        sum += elem;
+    }
+    return sum;
+}

@@ -5,6 +5,7 @@
 #include <vector>
 #include <stdexcept>
 #include <tuple>
+#include "Vector.h"
 
 template <typename T>
 class Matrix {
@@ -27,6 +28,11 @@ public:
     Matrix<T> operator-(T);
     Matrix<T> operator*(T);
     Matrix<T> operator/(T);
+
+    Matrix<T> transpose();
+
+    Vector<T> sum();
+
 
 private:
     enum operations{ Add, Sub, Mul, Div };
