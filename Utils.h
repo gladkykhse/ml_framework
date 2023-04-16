@@ -5,6 +5,7 @@
 #include <cmath>
 #include <algorithm>
 #include <vector>
+#include <random>
 
 #include "Math.h"
 #include "Matrix.h"
@@ -23,6 +24,11 @@ public:
     static Vector<int> from_one_hot(Matrix<int>&);
     static float accuracy(Vector<int>&, Vector<int>&);
     static float accuracy(Vector<int>&, Matrix<int>&);
+    static Matrix<T> uniformMatrix(int, int, T, T);
+    static Vector<T> uniformVector(int, T, T);
+    static Matrix<T> addBiasColumn(Matrix<T>&);
+    static Matrix<T> matrixOf(int, int, T);
+    static Vector<T> vectorOf(int, T);
 };
 
 

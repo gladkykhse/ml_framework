@@ -152,4 +152,25 @@ Vector<T> Matrix<T>::sum() {
     return my_vec;
 }
 
+template<typename T>
+Vector<T> Matrix<T>::get_ith(int i) {
+    if (i >= matrix.size())
+        throw std::invalid_argument("Index of of range");
+
+    Vector<T> res_vec(matrix[i]);
+    return res_vec;
+}
+
+template<typename T>
+T Matrix<T>::get_ijth(int i, int j) {
+    if (i >= matrix.size() || j >= matrix[0].size())
+        throw std::invalid_argument("Index of of range");
+    return matrix[i][j];
+}
+
+template<typename T>
+void Matrix<T>::print_shape() {
+    std::cout << "(" << matrix.size() << ", " << matrix[0].size() << ")" << std::endl;
+}
+
 

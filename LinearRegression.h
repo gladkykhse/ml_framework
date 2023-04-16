@@ -6,14 +6,18 @@
 #include "Math.h"
 #include "Utils.h"
 
-
+template<typename T>
 class LinearRegression {
-    explicit LinearRegression();
+public:
+    LinearRegression(float learning_rate, float regularization);
 
-    void fit(Matrix<float>, Vector<int>);
+    void fit(Matrix<T>&, Vector<T>&, int, int);
 
-    float predict(Vector<float>);
-    float predict(Matrix<float>);
+    T predict(Vector<T>&);
+    Vector<T> predict(Matrix<T>&);
+private:
+    const float learning_rate, regularization;
+    Matrix<T> weights = Utils<T>::matrixOf(1,1,1);
 };
 
 

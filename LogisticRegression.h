@@ -6,16 +6,17 @@
 #include "Math.h"
 #include "Utils.h"
 
+template<typename T>
 class LogisticRegression {
     explicit LogisticRegression();
 
-    void fit(Matrix<float>, Vector<int>);
+    void fit(Matrix<T>, Vector<int>);
 
-    float predict_proba(Vector<float>);
-    Vector<float> predict_proba(Matrix<float>);
+    float predict_proba(Vector<T>);
+    Vector<T> predict_proba(Matrix<T>);
 
-    int prodict(Vector<float>);
-    Vector<int> prodict(Matrix<float>);
+    int prodict(Vector<T>);
+    Vector<int> prodict(Matrix<T>);
 };
 
 

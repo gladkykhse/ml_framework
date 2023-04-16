@@ -18,6 +18,7 @@ public:
     int size();
 
     vector_type& get();
+    T get_ith(int);
 
     Vector<T> operator+(Vector<T>&);
     Vector<T> operator-(Vector<T>&);

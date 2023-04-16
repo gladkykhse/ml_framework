@@ -81,3 +81,59 @@ float Utils<T>::accuracy(Vector<int> &y_true , Matrix<int> &y_pred) {
     Vector<int> flattened_preds = from_one_hot(y_pred);
     return accuracy(y_true, flattened_preds);
 }
+
+template<typename T>
+Matrix<T> Utils<T>::uniformMatrix(int height, int width, T mean, T std) {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::normal_distribution<T> d{mean, std};
+    matrix_type rand_matrix(height, vector_type(width, 0));
+
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+            rand_matrix[i][j] = d(gen);
+        }
+    }
+
+    Matrix<T> res_mat(rand_matrix);
+    return res_mat;
+}
+
+template<typename T>
+Vector<T> Utils<T>::uniformVector(int length, T mean, T std) {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::normal_distribution<T> d{mean, std};
+    vector_type v(length, 0);
+
+    for (int i = 0; i < length; i++) {
+        v[i] = d(gen);
+    }
+
+    Vector<T> res_vec(v);
+    return res_vec;
+}
+
+template<typename T>
+Matrix<T> Utils<T>::addBiasColumn(Matrix<T> &M) {
+    matrix_type mat = M.get();
+    for (auto &row : mat) {
+        row.push_back(1);
+    }
+    Matrix<T> res(mat);
+    return res;
+}
+
+template<typename T>
+Matrix<T> Utils<T>::matrixOf(int height, int width, T val) {
+    matrix_type my_mat(height, vector_type(width, val));
+    Matrix<T> res_mat(my_mat);
+    return res_mat;
+}
+
+template<typename T>
+Vector<T> Utils<T>::vectorOf(int length, T val) {
+    vector_type my_vec(length, val);
+    Vector<T> res_vec(my_vec);
+    return res_vec;
+}

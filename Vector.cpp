@@ -134,3 +134,11 @@ T Vector<T>::sum() {
     }
     return sum;
 }
+
+template<typename T>
+T Vector<T>::get_ith(int i) {
+    if (i >= my_vector.size())
+        throw std::invalid_argument("Index of of range");
+
+    return my_vector[i];
+}

@@ -20,6 +20,10 @@ public:
     std::tuple<int, int> shape();
 
     matrix_type& get();
+    Vector<T> get_ith(int);
+    T get_ijth(int, int);
+
+    void print_shape();
 
     Matrix<T> operator+(Matrix<T>&);
     Matrix<T> operator-(Matrix<T>&);
@@ -32,7 +36,6 @@ public:
     Matrix<T> operator/(T);
 
     Matrix<T> transpose();
-
     Vector<T> sum();
 
 
