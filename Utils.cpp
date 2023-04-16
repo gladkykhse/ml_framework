@@ -24,21 +24,16 @@ T Utils<T>::sigmoid(T x) {
 }
 
 template<typename T>
-Vector<T> Utils<T>::softmax(Vector<T> &v) {
-    return (Math<float>::exponentiate(v) / Math<float>::exponentiate(v).sum());
-}
-
-template<typename T>
-Matrix<int> Utils<T>::one_hot(Vector<int> &targets) {
-    vector_type target_vals = targets.get();
+Matrix<T> Utils<T>::one_hot(Vector<int> &targets) {
+    std::vector<int> target_vals = targets.get();
     int max_elem = *std::max_element(target_vals.begin(), target_vals.end());
-    std::vector<std::vector<int>> res_mat(targets.size(), vector_type(max_elem + 1, 0));
+    matrix_type res_mat(targets.size(), vector_type(max_elem + 1, 0));
 
     for (int i = 0; i < targets.size(); i++) {
         res_mat[i][target_vals[i]] = 1;
     }
 
-    Matrix<int> my_mat(res_mat);
+    Matrix<T> my_mat(res_mat);
     return my_mat;
 }
 
@@ -64,8 +59,8 @@ float Utils<T>::accuracy(Vector<int> &y_true, Vector<int> &y_pred) {
     if (y_true.size() != y_pred.size())
         throw std::invalid_argument("Vectors must be of the same length");
 
-    vector_type true_vals = y_true.get();
-    vector_type pred_vals = y_pred.get();
+    std::vector<int> true_vals = y_true.get();
+    std::vector<int> pred_vals = y_pred.get();
 
     float counter = 0;
     for (int i = 0; i < true_vals.size(); i++) {
@@ -136,4 +131,46 @@ Vector<T> Utils<T>::vectorOf(int length, T val) {
     vector_type my_vec(length, val);
     Vector<T> res_vec(my_vec);
     return res_vec;
+}
+
+template<typename T>
+float Utils<T>::crossEntropy(Vector<T> &y_true, Vector<T> &y_pred) {
+    float loss = 0.0;
+    for (int i = 0; i < y_pred.size(); i++) {
+        loss += y_true.get_ith(i) * std::log(y_pred.get_ith(i));
+    }
+    return -loss;
+}
+
+template<typename T>
+float Utils<T>::crossEntropy(Matrix<T> &y_true, Matrix<T> &y_pred) {
+    float loss = 0.0;
+    const int batch_size = std::get<0>(y_true.shape());
+    const int num_classes = std::get<1>(y_true.shape());
+
+    for (int i = 0; i < batch_size; i++) {
+        for (int j = 0; j < num_classes; j++) {
+            loss += y_true.get_ijth(i, j) * std::log(y_pred.get_ijth(i, j));
+        }
+    }
+    return -loss / batch_size;
+}
+
+template<typename T>
+Vector<T> Utils<T>::softmax(Vector<T> &v) {
+    return (Math<float>::exponentiate(v) / Math<float>::exponentiate(v).sum());
+}
+
+template<typename T>
+Matrix<T> Utils<T>::softmax(Matrix<T> &M) {
+    matrix_type res(std::get<0>(M.shape()), vector_type(std::get<1>(M.shape()), 0));
+    for (int i = 0; i < std::get<0>(M.shape()); i++) {
+        Vector<T> currentRow = M.get_ith(i);
+        currentRow = (Math<float>::exponentiate(currentRow) / Math<float>::exponentiate(currentRow).sum());
+        for (int j = 0; j < currentRow.size(); j++) {
+            res[i][j] = currentRow.get_ith(j);
+        }
+    }
+    Matrix<T> res_mat(res);
+    return res_mat;
 }

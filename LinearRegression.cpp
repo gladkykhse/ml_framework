@@ -1,8 +1,7 @@
 #include "LinearRegression.h"
 
 template<typename T>
-LinearRegression<T>::LinearRegression(float learning_rate, float regularization) : learning_rate(learning_rate), regularization(regularization) {
-}
+LinearRegression<T>::LinearRegression(float learning_rate, float regularization) : learning_rate(learning_rate), regularization(regularization) {}
 
 template<typename T>
 void LinearRegression<T>::fit(Matrix<T> &data,
