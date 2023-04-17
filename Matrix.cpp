@@ -34,16 +34,16 @@ Matrix<T> Matrix<T>::matrixOperation(Matrix<T> &other, Matrix::operations op) {
         for (int j = 0; j < matrix[0].size(); j++) {
             switch (op) {
                 case Add:
-                    newMatrix[i][j] = matrix[i][j] + other.get()[i][j];
+                    newMatrix[i][j] = matrix[i][j] + other.get_ijth(i, j);
                     break;
                 case Sub:
-                    newMatrix[i][j] = matrix[i][j] - other.get()[i][j];
+                    newMatrix[i][j] = matrix[i][j] - other.get_ijth(i, j);
                     break;
                 case Mul:
-                    newMatrix[i][j] = matrix[i][j] * other.get()[i][j];
+                    newMatrix[i][j] = matrix[i][j] * other.get_ijth(i, j);
                     break;
                 case Div:
-                    T elem = other.get()[i][j];
+                    T elem = other.get_ijth(i, j);
                     if (elem == 0)
                         throw std::runtime_error("Division by zero");
                     newMatrix[i][j] = matrix[i][j] / elem;

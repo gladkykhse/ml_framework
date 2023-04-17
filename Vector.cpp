@@ -30,16 +30,16 @@ Vector<T> Vector<T>::vectorOperation(Vector<T> &other, Vector::operations op) {
     for (int i = 0; i < this->size(); i++) {
         switch (op) {
             case Add:
-                new_vec[i] = my_vector[i] + other.get()[i];
+                new_vec[i] = my_vector[i] + other.get_ith(i);
                 break;
             case Sub:
-                new_vec[i] = my_vector[i] - other.get()[i];
+                new_vec[i] = my_vector[i] - other.get_ith(i);
                 break;
             case Mul:
-                new_vec[i] = my_vector[i] * other.get()[i];
+                new_vec[i] = my_vector[i] * other.get_ith(i);
                 break;
             case Div:
-                T elem = other.get()[i];
+                T elem = other.get_ith(i);
                 if (elem == 0)
                     throw std::runtime_error("Division by zero");
                 new_vec[i] = my_vector[i] / elem;

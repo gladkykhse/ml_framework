@@ -22,7 +22,7 @@ public:
     static Vector<T> softmax(Vector<T>&);
     static Matrix<T> softmax(Matrix<T>&);
     static Matrix<T> one_hot(Vector<int>&);
-    static Vector<int> from_one_hot(Matrix<int>&);
+    static Vector<int> from_one_hot(Matrix<T>&);
     static float accuracy(Vector<int>&, Vector<int>&);
     static float accuracy(Vector<int>&, Matrix<int>&);
     static Matrix<T> uniformMatrix(int, int, T, T);

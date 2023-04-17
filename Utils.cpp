@@ -6,11 +6,9 @@ T Utils<T>::rmse(Vector<T> &y_true, Vector<T> &y_pred) {
         throw std::invalid_argument("Vectors must be of the same length");
 
     T sum = 0;
-    vector_type true_vals = y_true.get();
-    vector_type pred_vals = y_pred.get();
 
     for (int i = 0; i < y_true.size(); i++) {
-        sum += pow((true_vals[i] - pred_vals[i]), 2);
+        sum += pow((y_true.get_ith(i) - y_pred.get_ith(i)), 2);
     }
 
     sum /= y_true.size();
@@ -38,12 +36,12 @@ Matrix<T> Utils<T>::one_hot(Vector<int> &targets) {
 }
 
 template<typename T>
-Vector<int> Utils<T>::from_one_hot(Matrix<int> &M) {
+Vector<int> Utils<T>::from_one_hot(Matrix<T> &M) {
     matrix_type one_hot = M.get();
-    vector_type res_vec;
-    for (int i = 0; i < one_hot.size(); i++) {
-        for (int j = 0; j < one_hot[0].size(); j++) {
-            if (one_hot[i][j] == 1) {
+    std::vector<int> res_vec;
+    for (int i = 0; i < std::get<0>(M.shape()); i++) {
+        for (int j = 0; j < std::get<1>(M.shape()); j++) {
+            if (M.get_ijth(i, j) == 1) {
                 res_vec.push_back(j);
                 break;
             }
@@ -59,12 +57,9 @@ float Utils<T>::accuracy(Vector<int> &y_true, Vector<int> &y_pred) {
     if (y_true.size() != y_pred.size())
         throw std::invalid_argument("Vectors must be of the same length");
 
-    std::vector<int> true_vals = y_true.get();
-    std::vector<int> pred_vals = y_pred.get();
-
     float counter = 0;
-    for (int i = 0; i < true_vals.size(); i++) {
-        if (true_vals[i] == pred_vals[i])
+    for (int i = 0; i < y_true.size(); i++) {
+        if (y_true.get_ith(i) == y_pred.get_ith(i))
             counter++;
     }
 
