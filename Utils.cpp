@@ -132,6 +132,8 @@ template<typename T>
 float Utils<T>::crossEntropy(Vector<T> &y_true, Vector<T> &y_pred) {
     float loss = 0.0;
     for (int i = 0; i < y_pred.size(); i++) {
+//        if (y_pred.get_ith(i) <= 0)
+//            continue;
         loss += y_true.get_ith(i) * std::log(y_pred.get_ith(i));
     }
     return -loss;
@@ -153,7 +155,9 @@ float Utils<T>::crossEntropy(Matrix<T> &y_true, Matrix<T> &y_pred) {
 
 template<typename T>
 Vector<T> Utils<T>::softmax(Vector<T> &v) {
-    return (Math<float>::exponentiate(v) / Math<float>::exponentiate(v).sum());
+    T max = *max_element(v.get().begin(), v.get().end());
+    Vector<T> scaled_v = v - max;
+    return (Math<T>::exponentiate((scaled_v)) / Math<T>::exponentiate(scaled_v).sum());
 }
 
 template<typename T>
@@ -161,11 +165,35 @@ Matrix<T> Utils<T>::softmax(Matrix<T> &M) {
     matrix_type res(std::get<0>(M.shape()), vector_type(std::get<1>(M.shape()), 0));
     for (int i = 0; i < std::get<0>(M.shape()); i++) {
         Vector<T> currentRow = M.get_ith(i);
-        currentRow = (Math<float>::exponentiate(currentRow) / Math<float>::exponentiate(currentRow).sum());
+        T max = *max_element(currentRow.get().begin(), currentRow.get().end());
+        currentRow = currentRow - max;
+
+        currentRow = (Math<T>::exponentiate(currentRow) / Math<T>::exponentiate(currentRow).sum());
         for (int j = 0; j < currentRow.size(); j++) {
             res[i][j] = currentRow.get_ith(j);
         }
     }
     Matrix<T> res_mat(res);
     return res_mat;
+}
+
+template<typename T>
+bool Utils<T>::isNan(Matrix<T> &M) {
+    for (int i = 0; i < std::get<0>(M.shape()); i++) {
+        for (int j = 0; j < std::get<1>(M.shape()); j++) {
+            if (M.get_ijth(i, j) != M.get_ijth(i, j)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+template<typename T>
+bool Utils<T>::isNan(Vector<T> &v) {
+    for (int i = 0; i < v.size(); i++) {
+        if (v.get_ith(i) != v.get_ith(i))
+            return true;
+    }
+    return false;
 }

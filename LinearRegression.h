@@ -11,7 +11,7 @@ class LinearRegression {
 public:
     LinearRegression(float learning_rate, float regularization);
 
-    void fit(Matrix<T>&, Vector<T>&, int, int);
+    void fit(Matrix<T>&, Vector<T>&, T, T);
 
     T predict(Vector<T>&);
     Vector<T> predict(Matrix<T>&);

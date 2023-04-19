@@ -15,32 +15,35 @@ void LogisticRegression<T>::fit(Matrix<T> &data,
     int number_of_features = std::get<1>(data_with_bias.shape());
     int number_of_classes = std::get<1>(one_hot_targets.shape());
 
-    weights = Utils<T>::uniformMatrix(number_of_features, number_of_classes, 0, 1);
+    weights = Utils<T>::uniformMatrix(number_of_features, number_of_classes, 0, 0.1);
 
     for (int epoch = 1; epoch < epochs + 1; epoch++) {
         for (int i = 0; i < number_of_samples; i += batch_size) {
             Matrix<T> gradient = Utils<T>::matrixOf(number_of_features, number_of_classes, 0);
-            for (int j = i; j < (i + batch_size); j++) {
-                Vector<T> sample = data_with_bias.get_ith(j);
+            if (i + batch_size < number_of_samples) {
+                for (int j = i; j < (i + batch_size); j++) {
+                    Matrix<T> y = Math<T>::matmul(data_with_bias, weights);
+                    Vector<T> my_pred = y.get_ith(j);
+                    Vector<T> my_target = one_hot_targets.get_ith(j);
+                    Vector<T> dif = my_pred - my_target;
 
-                Matrix<T> matrixSample = sample.toMatrix();
-                Matrix<T> pred = Math<T>::matmul(matrixSample, weights);
+                    Matrix<T> ys = Utils<T>::softmax(dif).toMatrix();
+                    Matrix<T> xs = data_with_bias.get_ith(j).toMatrix();
+                    xs = xs.transpose();
 
-                Vector<T> pred_i = pred.get_ith(0);
-                Vector<T> soft_dif = Utils<T>::softmax(pred_i);
-                Vector<T> target_i = one_hot_targets.get_ith(j);
+                    Matrix<T> product = Math<T>::matmul(xs, ys);
+                    product = product / batch_size;
 
-                soft_dif = (soft_dif - target_i);
-                Matrix<T> lhs = soft_dif.toMatrix().transpose();
-
-                Matrix<T> grad = Math<T>::matmul(lhs, matrixSample);
-                grad = grad.transpose();
-                grad = (grad / batch_size);
-                gradient = gradient + grad;
+                    gradient = gradient + product;
+                }
             }
+
             Matrix<T> weights_update = (gradient * learning_rate);
             weights = weights - weights_update;
+            gradient.print();
+
         }
+
         Matrix<T> probs = predict_proba(data);
         Vector<int> y_pred = predict(data);
         Vector<int> y_true = targets;

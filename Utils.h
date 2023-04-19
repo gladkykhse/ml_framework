@@ -32,6 +32,8 @@ public:
     static Vector<T> vectorOf(int, T);
     static float crossEntropy(Vector<T>&, Vector<T>&);
     static float crossEntropy(Matrix<T>&, Matrix<T>&);
+    static bool isNan(Matrix<T>&);
+    static bool isNan(Vector<T>&);
 };
 
 

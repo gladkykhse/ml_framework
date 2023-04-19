@@ -5,34 +5,22 @@
 #include "Utils.cpp"
 #include "LinearRegression.cpp"
 #include "LogisticRegression.cpp"
+#include "CSVReader.cpp"
 
-#include <vector>
+using ComputationType = double;
 
 int main() {
-    std::vector<int> my_v1 = {1, 0, 1, 0, 1, 0};
-    std::vector<float> my_v2 = {1,2,2};
-    Vector<int> v1(my_v1);
-    Vector<float> v2(my_v2);
+    Matrix<ComputationType> data = CSVReader<ComputationType>::readFile("/Users/svatoslavgladkih/Documents/ml_framework/regression_data.csv", false);
+    Matrix<ComputationType> target = CSVReader<ComputationType>::readFile("/Users/svatoslavgladkih/Documents/ml_framework/regression_target.csv", false);
+    Matrix<ComputationType> train_data = data;
+    Vector<ComputationType> train_target = target.get_ith(0);
 
-    std::vector<std::vector<float>> my_m1 {
-        {1,1,3},
-        {2,5,4},
-        {1,2,1},
-        {5,6,7},
-        {1,3,0},
-        {3,2,5}
-    };
-    std::vector<std::vector<float>> my_m2 {
-        {1,2},
-        {1,2},
-        {1,2}
-    };
-    Matrix<float> m1(my_m1);
-    Matrix<float> m2(my_m2);
+//    train_data.print_shape();
+//    std::cout << train_target.size() << std::endl;
 
-    LogisticRegression<float> qwe(0.01,0.0);
-    qwe.fit(m1, v1, 50, 1);
-//    qwe.predict(m1).print();
-//    std::cout << res << std::endl;
+    LinearRegression<ComputationType> log_reg(0.001, 0.1);
+    log_reg.fit(train_data, train_target, 10, 50);
+
+
     return 0;
 }
