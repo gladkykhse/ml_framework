@@ -30,11 +30,9 @@ void LinearRegression<T>::fit(Matrix<T> &data,
                     T my_prediction = Math<T>::matmul(matrix_sample, weights).get_ijth(0, 0);
                     std::cout << (my_prediction - target) << std::endl;
                     gradient = ((matrix_sample * (my_prediction - target)) / batch_size) + gradient;
-//                    gradient.print();
                 }
                 Matrix<T> transposed_gradient = gradient.transpose();
                 Matrix<T> regularized_weights = (weights * regularization);
-//                regularized_weights.print();
                 Matrix<T> weights_update = ((transposed_gradient + regularized_weights) * learning_rate);
                 weights = weights - weights_update;
             }
