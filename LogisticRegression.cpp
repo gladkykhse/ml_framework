@@ -21,17 +21,15 @@ void LogisticRegression<T>::fit(Matrix<T> &data,
         for (int i = 0; i < number_of_samples; i += batch_size) {
             Matrix<T> gradient = Utils<T>::matrixOf(number_of_features, number_of_classes, 0);
             if (i + batch_size < number_of_samples) {
+                Matrix<T> y = Math<T>::matmul(data_with_bias, weights);
                 for (int j = i; j < (i + batch_size); j++) {
-                    Matrix<T> y = Math<T>::matmul(data_with_bias, weights);
-                    Vector<T> my_pred = y.get_ith(j);
                     Vector<T> my_target = one_hot_targets.get_ith(j);
-                    Vector<T> dif = my_pred - my_target;
+                    Vector<T> dif = y.get_ith(j) - my_target;
 
-                    Matrix<T> ys = Utils<T>::softmax(dif).toMatrix();
-                    Matrix<T> xs = data_with_bias.get_ith(j).toMatrix();
-                    xs = xs.transpose();
+                    Vector<T> xs = data_with_bias.get_ith(j);
+                    Vector<T> ys = Utils<T>::softmax(dif);
 
-                    Matrix<T> product = Math<T>::matmul(xs, ys);
+                    Matrix<T> product = Math<T>::outer(xs, ys);
                     product = product / batch_size;
 
                     gradient = gradient + product;
@@ -40,8 +38,6 @@ void LogisticRegression<T>::fit(Matrix<T> &data,
 
             Matrix<T> weights_update = (gradient * learning_rate);
             weights = weights - weights_update;
-            gradient.print();
-
         }
 
         Matrix<T> probs = predict_proba(data);

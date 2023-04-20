@@ -11,9 +11,9 @@
 template<typename T>
 class CSVReader {
 public:
-    static Matrix<T> readFile(std::string, bool);
+    static Matrix<T> readFile(std::string, bool, bool);
 private:
-    static std::vector<T> parseLine(std::string);
+    static std::vector<T> parseLine(std::string, bool);
     static T strToT(std::string);
 };
 

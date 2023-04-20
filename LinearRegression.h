@@ -11,13 +11,13 @@ class LinearRegression {
 public:
     LinearRegression(float learning_rate, float regularization);
 
-    void fit(Matrix<T>&, Vector<T>&, T, T);
+    void fit(Matrix<T>&, Vector<T>&, int, int);
 
     T predict(Vector<T>&);
     Vector<T> predict(Matrix<T>&);
 private:
     const float learning_rate, regularization;
-    Matrix<T> weights = Utils<T>::matrixOf(1,1,1);
+    Vector<T> weights = Utils<T>::vectorOf(1,0);
 };
 
 

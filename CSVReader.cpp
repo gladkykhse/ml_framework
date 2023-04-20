@@ -17,7 +17,7 @@ T CSVReader<T>::strToT(std::string n) {
 }
 
 template<typename T>
-std::vector<T> CSVReader<T>::parseLine(std::string line) {
+std::vector<T> CSVReader<T>::parseLine(std::string line, bool includeLeft) {
     std::vector<T> my_line;
     std::string buffer = "";
     const char delim = ',';
@@ -33,11 +33,13 @@ std::vector<T> CSVReader<T>::parseLine(std::string line) {
             buffer += chr;
         }
     }
+    if (!includeLeft)
+        my_line.erase(my_line.begin());
     return my_line;
 }
 
 template<typename T>
-Matrix<T> CSVReader<T>::readFile(std::string filename, bool includeTop) {
+Matrix<T> CSVReader<T>::readFile(std::string filename, bool includeTop, bool includeLeft) {
     std::vector<std::vector<T>> data;
 
     std::string file_str;
@@ -64,7 +66,7 @@ Matrix<T> CSVReader<T>::readFile(std::string filename, bool includeTop) {
             std::cout << "Cannot read from the file" << std::endl;
             exit(8);
         }
-        data.push_back(parseLine(file_str));
+        data.push_back(parseLine(file_str, includeLeft));
     }
 
 

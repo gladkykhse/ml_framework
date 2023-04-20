@@ -7,19 +7,19 @@
 #include "LogisticRegression.cpp"
 #include "CSVReader.cpp"
 
-using ComputationType = double;
+using ComputationType = float;
 
 int main() {
-    Matrix<ComputationType> data = CSVReader<ComputationType>::readFile("/Users/svatoslavgladkih/Documents/ml_framework/regression_data.csv", false);
-    Matrix<ComputationType> target = CSVReader<ComputationType>::readFile("/Users/svatoslavgladkih/Documents/ml_framework/regression_target.csv", false);
+    Matrix<ComputationType> data = CSVReader<ComputationType>::readFile("/Users/svatoslavgladkih/Documents/ml_framework/classification_data.csv", false, false);
+    Matrix<int> target = CSVReader<int>::readFile("/Users/svatoslavgladkih/Documents/ml_framework/classification_target.csv", false, true);
     Matrix<ComputationType> train_data = data;
-    Vector<ComputationType> train_target = target.get_ith(0);
+    Vector<int> train_target = target.get_ith(0);
 
 //    train_data.print_shape();
 //    std::cout << train_target.size() << std::endl;
 
-    LinearRegression<ComputationType> log_reg(0.001, 0.1);
-    log_reg.fit(train_data, train_target, 10, 50);
+    LogisticRegression<ComputationType> model(0.01, 0.1);
+    model.fit(train_data, train_target, 1, 1);
 
 
     return 0;

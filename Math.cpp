@@ -41,7 +41,7 @@ Matrix<T> Math<T>::outer(Vector<T> &v1, Vector<T> &v2) {
 
     for (int i = 0; i < v1.size(); i++) {
         for (int j = 0; j < v2.size(); j++) {
-            res_matrix[i][j] = v1.get_ith(i) * v1.get_ith(i);
+            res_matrix[i][j] = v1.get_ith(i) * v2.get_ith(j);
         }
     }
 

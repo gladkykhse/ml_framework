@@ -6,43 +6,40 @@ LinearRegression<T>::LinearRegression(float learning_rate, float regularization)
 template<typename T>
 void LinearRegression<T>::fit(Matrix<T> &data,
                               Vector<T> &targets,
-                              T epochs,
-                              T batch_size) {
-
+                              int epochs,
+                              int batch_size) {
     Matrix<T> data_with_bias = Utils<T>::addBiasColumn(data);
 
     int number_of_samples = std::get<0>(data_with_bias.shape());
     int number_of_features = std::get<1>(data_with_bias.shape());
 
-    weights = Utils<T>::uniformMatrix(number_of_features, 1, 0, 0.1);
-//    weights.print();
+    weights = Utils<T>::uniformVector(number_of_features, 0, 0.1);
 
-    for (int epoch = 1; epoch < epochs + 1; epoch++) {
-        for (int i = 0; i < number_of_samples; i += batch_size) {
-            Matrix<T> gradient = Utils<T>::matrixOf(1, number_of_features, 0);
-            if (i + batch_size < number_of_samples) {
-                for (int j = i; j < (i + batch_size); j++) {
-                    Vector<T> sample = data_with_bias.get_ith(j);
-                    T target = targets.get_ith(j);
+    for (int ep = 0 ; ep < epochs; ep++) {
+        for (int i = 0; i < (number_of_samples - (number_of_samples % batch_size)); i += batch_size) {
+            Vector<T> gradient = Utils<T>::vectorOf(number_of_features, 0);
+            for (int j = i; j < i + batch_size; j++) {
+                Vector<T> sample = data_with_bias.get_ith(j);
+                T target = targets.get_ith(j);
 
-                    Matrix<T> matrix_sample = sample.toMatrix();
+                T predicted = Math<T>::inner(sample, weights);
+                predicted = predicted - target;
 
-                    T my_prediction = Math<T>::matmul(matrix_sample, weights).get_ijth(0, 0);
-                    std::cout << (my_prediction - target) << std::endl;
-                    gradient = ((matrix_sample * (my_prediction - target)) / batch_size) + gradient;
-                }
-                Matrix<T> transposed_gradient = gradient.transpose();
-                Matrix<T> regularized_weights = (weights * regularization);
-                Matrix<T> weights_update = ((transposed_gradient + regularized_weights) * learning_rate);
-                weights = weights - weights_update;
+                Vector<T> grad = (sample * predicted) / batch_size;
+                gradient = gradient + grad;
             }
+            Vector<T> reg_weights = weights * regularization;
+            Vector<T> weights_update = gradient + reg_weights;
+            weights_update = weights_update * learning_rate;
+            weights = weights - weights_update;
         }
         Vector<T> y_true = targets;
-        Vector<T> y_pred = predict(data);
-        std::cout << "Epoch: " << epoch << ", RMSE: " << Utils<T>::rmse(y_true, y_pred) << std::endl;
-        std::cout << "Weights learned: ";
-        weights.transpose().print();
-//        std::cout << std::endl;
+        Matrix<T> matrix_weights = weights.toMatrix().transpose();
+        Matrix<T> y_pred = Math<T>::matmul(data_with_bias, matrix_weights);
+        y_pred = y_pred.transpose();
+        Vector<T> vectorized_preds = y_pred.get_ith(0);
+
+        std::cout << "Epoch: " << (ep + 1) << ", RMSE: " << Utils<T>::rmse(y_true, vectorized_preds) << std::endl;
     }
 }
 
